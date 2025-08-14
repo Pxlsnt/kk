@@ -21,7 +21,7 @@ $dns = "mysql:host=$host;dbname=$database";
         //set the PDO error mode to exception
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        echo "PDO:: Connected successfully";
+        echo "";
 
     } catch(PDOException $e){
         echo "NO" .$e->getMessage();
