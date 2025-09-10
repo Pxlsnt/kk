@@ -13,7 +13,7 @@ $product = $stmt->fetch(PDO::FETCH_ASSOC);
 $isLoggedIn = isset($_SESSION['user_id']);
 
 if(!isset($_GET['id'])){
-    header('Location: test_index.php');
+    header('Location: test.php');
     exit();
 }
 
@@ -28,7 +28,7 @@ if(!isset($_GET['id'])){
 </head>
 
 <body class="container mt-4">
-    <a href="test_index.php" class="btn btn-secondary mb-3">← กลับหน้ารายการสินค้า</a>
+    <a href="test.php" class="btn btn-secondary mb-3">← กลับหน้ารายการสินค้า</a>
     <div class="card">
         <div class="card-body">
             <h3 class="card-title"><?= htmlspecialchars($product['product_name']) ?></h3>

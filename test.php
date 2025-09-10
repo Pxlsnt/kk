@@ -20,6 +20,92 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>หน้าหลัก</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
+    <style>
+    body {
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+        font-weight: bold;
+        color: #212529;
+        position: relative;
+        display: inline-block;
+        padding-bottom: 8px;
+    }
+
+    h1::after {
+        content: "";
+        display: block;
+        width: 60%;
+        height: 3px;
+        background: #0d6efd;
+        margin: 8px auto 0;
+        border-radius: 5px;
+    }
+
+    .card {
+        border: none;
+        border-radius: 20px;
+        background: #ffffff;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .card-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #212529;
+    }
+
+    .card-subtitle {
+        font-size: 0.85rem;
+        margin-bottom: 12px;
+    }
+
+    .card-subtitle.text-muted {
+        background: #e9ecef;
+        color: #495057 !important;
+        padding: 4px 10px;
+        border-radius: 8px;
+        display: inline-block;
+    }
+
+    .btn {
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.25s ease;
+    }
+
+    .btn-success {
+        background: linear-gradient(135deg, #28a745, #218838);
+        border: none;
+    }
+
+    .btn-success:hover {
+        background: linear-gradient(135deg, #218838, #1e7e34);
+    }
+
+    .btn-outline-primary {
+        border-radius: 12px;
+        font-weight: 500;
+        transition: all 0.25s ease;
+    }
+
+    .btn-outline-primary:hover {
+        background: #0d6efd;
+        color: #fff;
+    }
+
+    .d-flex a {
+        margin-left: 6px;
+    }
+</style>
 </head>
 
 <body class="container mt-4">
