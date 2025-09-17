@@ -2,7 +2,7 @@
 session_start(); // เริ่ม session
 
 require_once 'config.php'; // เชื่อมต่อฐานข้อมูล
-$isLoggedIn = isset($_SESSION['user_id']);// ตรวจสอบว่าผู้ใช้ล็อกอินแล้วหรือไม่
+$isLoggedIn = isset($_SESSION['user_id']); // ตรวจสอบว่าผู้ใช้ล็อกอินแล้วหรือไม่
 
 $stmt = $conn->query("SELECT p.*,c.category_name
     FROM products p
@@ -21,91 +21,91 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <title>หน้าหลัก</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
     <style>
-    body {
-        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    }
+        body {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    h1 {
-        font-weight: bold;
-        color: #212529;
-        position: relative;
-        display: inline-block;
-        padding-bottom: 8px;
-    }
+        h1 {
+            font-weight: bold;
+            color: #212529;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 8px;
+        }
 
-    h1::after {
-        content: "";
-        display: block;
-        width: 60%;
-        height: 3px;
-        background: #0d6efd;
-        margin: 8px auto 0;
-        border-radius: 5px;
-    }
+        h1::after {
+            content: "";
+            display: block;
+            width: 60%;
+            height: 3px;
+            background: #0d6efd;
+            margin: 8px auto 0;
+            border-radius: 5px;
+        }
 
-    .card {
-        border: none;
-        border-radius: 20px;
-        background: #ffffff;
-        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease-in-out;
-    }
+        .card {
+            border: none;
+            border-radius: 20px;
+            background: #ffffff;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease-in-out;
+        }
 
-    .card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
-    }
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
 
-    .card-title {
-        font-size: 1.3rem;
-        font-weight: 600;
-        color: #212529;
-    }
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #212529;
+        }
 
-    .card-subtitle {
-        font-size: 0.85rem;
-        margin-bottom: 12px;
-    }
+        .card-subtitle {
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
 
-    .card-subtitle.text-muted {
-        background: #e9ecef;
-        color: #495057 !important;
-        padding: 4px 10px;
-        border-radius: 8px;
-        display: inline-block;
-    }
+        .card-subtitle.text-muted {
+            background: #e9ecef;
+            color: #495057 !important;
+            padding: 4px 10px;
+            border-radius: 8px;
+            display: inline-block;
+        }
 
-    .btn {
-        border-radius: 12px;
-        font-weight: 500;
-        transition: all 0.25s ease;
-    }
+        .btn {
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
 
-    .btn-success {
-        background: linear-gradient(135deg, #28a745, #218838);
-        border: none;
-    }
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #218838);
+            border: none;
+        }
 
-    .btn-success:hover {
-        background: linear-gradient(135deg, #218838, #1e7e34);
-    }
+        .btn-success:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+        }
 
-    .btn-outline-primary {
-        border-radius: 12px;
-        font-weight: 500;
-        transition: all 0.25s ease;
-    }
+        .btn-outline-primary {
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.25s ease;
+        }
 
-    .btn-outline-primary:hover {
-        background: #0d6efd;
-        color: #fff;
-    }
+        .btn-outline-primary:hover {
+            background: #0d6efd;
+            color: #fff;
+        }
 
-    .d-flex a {
-        margin-left: 6px;
-    }
-</style>
+        .d-flex a {
+            margin-left: 6px;
+        }
+    </style>
 </head>
 
 <body class="container mt-4">
@@ -114,43 +114,43 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <div>
             <?php
-    if ($isLoggedIn) : ?>
-            <span class="me-3">ยินดีต้อนรับ, <?= htmlspecialchars($_SESSION['username']) ?> (<?=
-    $_SESSION['role'] ?>)</span>
-            <a href="profile.php" class="btn btn-info">ข้อมูลส่วนตัว</a>
-            <a href="cart.php" class="btn btn-warning">ดูตะกร้าสินค้า</a>
-            <a href="logout.php" class="btn btn-danger">ออกจากระบบ</a>
+            if ($isLoggedIn) : ?>
+                <span class="me-3">ยินดีต้อนรับ, <?= htmlspecialchars($_SESSION['username']) ?> (<?=
+                                                                                                    $_SESSION['role'] ?>)</span>
+                <a href="profile.php" class="btn btn-info">ข้อมูลส่วนตัว</a>
+                <a href="cart.php" class="btn btn-warning">ดูตะกร้าสินค้า</a>
+                <a href="logout.php" class="btn btn-danger">ออกจากระบบ</a>
             <?php else: ?>
-            <a href="login.php" class="btn btn-success">เข้าสู่ระบบ</a>
-            <a href="registeer.php" class="btn btn-primary">สมัครสมาชิก</a>
+                <a href="login.php" class="btn btn-success">เข้าสู่ระบบ</a>
+                <a href="registeer.php" class="btn btn-primary">สมัครสมาชิก</a>
             <?php endif; ?>
         </div>
         <!---รายการสินค้าที่จะแสดง--->
     </div>
     <div class="row">
         <?php foreach ($products as $product): ?>
-        <div class="col-md-4 mb-4">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title"><?= htmlspecialchars($product['product_name']) ?></h5>
-                    <h6 class="card-subtitle mb-2 text-muted"><?= htmlspecialchars($product['category_name'])
-    ?></h6>
-                    <p class="card-text"><?= nl2br(htmlspecialchars($product['description'])) ?></p>
-                    <p><strong>ราคา:</strong> <?= number_format($product['price'], 2) ?> บาท</p>
-                    <?php if ($isLoggedIn): ?>
-                    <form action="cart.php" method="post" class="d-inline">
-                        <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
-                        <input type="hidden" name="quantity" value="1">
-                        <button type="submit" class="btn btn-sm btn-success">เพิ่มในตะกร้า</button>
-                    </form>
-                    <?php else: ?>
-                    <small class="text-muted">เข้าสู่ระบบสู่เพื่อสั่งสินค้า </small>
-                    <?php endif; ?>
-                    <a href="product_detail.php?id=<?= $product['product_id'] ?>"
-                        class="btn btn-sm btn-outline-primary floatend">ดูรายละเอียด</a>
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title"><?= htmlspecialchars($product['product_name']) ?></h5>
+                        <h6 class="card-subtitle mb-2 text-muted"><?= htmlspecialchars($product['category_name'])
+                                                                    ?></h6>
+                        <p class="card-text"><?= nl2br(htmlspecialchars($product['description'])) ?></p>
+                        <p><strong>ราคา:</strong> <?= number_format($product['price'], 2) ?> บาท</p>
+                        <?php if ($isLoggedIn): ?>
+                            <form action="cart.php" method="post" class="d-inline">
+                                <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
+                                <input type="hidden" name="quantity" value="1">
+                                <button type="submit" class="btn btn-sm btn-success">เพิ่มในตะกร้า</button>
+                            </form>
+                        <?php else: ?>
+                            <small class="text-muted">เข้าสู่ระบบสู่เพื่อสั่งสินค้า </small>
+                        <?php endif; ?>
+                        <a href="product_detail.php?id=<?= $product['product_id'] ?>"
+                            class="btn btn-sm btn-outline-primary floatend">ดูรายละเอียด</a>
+                    </div>
                 </div>
             </div>
-        </div>
         <?php endforeach; ?>
     </div>
 

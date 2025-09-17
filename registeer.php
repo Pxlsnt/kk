@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($error)) {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO users(username,full_name,email,password,role) VALUES (?,?,?,?,'member')";
+        $sql = "INSERT INTO users(username,full_name,email,password,role) VALUES (?,?,?,?,'admin')";
         $stmt = $conn->prepare($sql);
         $stmt->execute([$username, $fname, $email, $hashedPassword]);
 
@@ -39,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 window.location.href = 'login.php';
             }, 3000);
         </script>";
-    } 
+    }
     exit();
 }
 ?>
@@ -47,16 +47,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
     <style>
-        html, body {
+        html,
+        body {
             margin: 0;
             padding: 0;
             height: 100%;
@@ -151,7 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             color: #0288d1;
         }
 
-        .alert-success, .alert-danger {
+        .alert-success,
+        .alert-danger {
             font-size: 0.95rem;
             padding: 10px 15px;
         }
@@ -166,10 +169,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             .card {
                 flex-direction: column;
             }
-            .card-left, .card-right {
+
+            .card-left,
+            .card-right {
                 width: 100%;
                 text-align: center;
             }
+
             .card-left {
                 padding: 20px;
             }
@@ -214,7 +220,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div class="mb-3">
                         <label for="fname" class="form-label">Full Name</label>
-                        <input type="text" name="fname" class="form-control" id="fname" placeholder="ชื่อ - นามสกุล" value="<?= isset($_POST['fname']) ? htmlspecialchars($_POST['fname']) : '' ?>"> 
+                        <input type="text" name="fname" class="form-control" id="fname" placeholder="ชื่อ - นามสกุล" value="<?= isset($_POST['fname']) ? htmlspecialchars($_POST['fname']) : '' ?>">
                     </div>
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
@@ -250,11 +256,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         "value_area": 800
                     }
                 },
-                "color": { "value": "#0288d1" },
+                "color": {
+                    "value": "#0288d1"
+                },
                 "shape": {
                     "type": "circle",
-                    "stroke": { "width": 0, "color": "#000" },
-                    "polygon": { "nb_sides": 5 }
+                    "stroke": {
+                        "width": 0,
+                        "color": "#000"
+                    },
+                    "polygon": {
+                        "nb_sides": 5
+                    }
                 },
                 "opacity": {
                     "value": 0.5,
@@ -284,18 +297,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "interactivity": {
                 "detect_on": "canvas",
                 "events": {
-                    "onhover": { "enable": true, "mode": "repulse" },
-                    "onclick": { "enable": true, "mode": "push" },
+                    "onhover": {
+                        "enable": true,
+                        "mode": "repulse"
+                    },
+                    "onclick": {
+                        "enable": true,
+                        "mode": "push"
+                    },
                     "resize": true
                 },
                 "modes": {
-                    "repulse": { "distance": 100, "duration": 0.4 },
-                    "push": { "particles_nb": 4 }
+                    "repulse": {
+                        "distance": 100,
+                        "duration": 0.4
+                    },
+                    "push": {
+                        "particles_nb": 4
+                    }
                 }
             },
             "retina_detect": true
         });
     </script>
 </body>
-</html>
 
+</html>

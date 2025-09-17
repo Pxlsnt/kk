@@ -1,292 +1,219 @@
 <?php
+session_start();
 require_once 'config.php';
 
-$error = [];
-$success = false;
+$error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
+    $usernameOrEmail = trim($_POST['username_or_email']);
     $password = $_POST['password'];
 
-    if (empty($username) || empty($password)) {
-        $error[] = "กรุณากรอกข้อมูลให้ครบ";
-    } else {
-        $stmt = $conn->prepare("SELECT * FROM users WHERE username = ? OR email = ?");
-        $stmt->execute([$username, $username]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $sql = "SELECT * FROM users WHERE (username = ? OR email = ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$usernameOrEmail, $usernameOrEmail]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
+    if ($user && password_verify($password, $user['password'])) {
+        $_SESSION['user_id'] = $user['user_id'];
+        $_SESSION['username'] = $user['username'];
+        $_SESSION['role'] = $user['role'];
 
-
-            $_SESSION['user_id'] = $user['ชอื่ ฟิลดใ์น db'];
-            $_SESSION['username'] = $user['ชอื่ ฟิลดใ์น db'];
-            $_SESSION['role'] = $user['ชอื่ ฟิลดใ์น db'];
-
-
-            $success = true;
-            session_start();
-            $_SESSION['user'] = $user['username'];
-            header("Location: test.php");
-            exit();
+        if ($user['role'] === 'admin') {
+            header("Location: admin/index.php");
         } else {
-            $error[] = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
+            header("Location: index.php");
         }
+        exit();
+    } else {
+        $error = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
     }
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="th">
 
 <head>
     <meta charset="UTF-8">
-    <title>Login - Online Shop</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <title>เข้าสู่ระบบ</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
     <style>
-    html,
-    body {
-        height: 100%;
-        margin: 0;
-        overflow: hidden;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    #particles-js {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-    }
-
-    .card {
-        max-width: 800px;
-        margin: auto;
-        display: flex;
-        flex-direction: row;
-        background: white;
-        border-radius: 20px;
-        overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-    }
-
-    .card-left {
-        background-color: #0097A7;
-        color: white;
-        padding: 30px 20px;
-        width: 40%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .card-left i {
-        font-size: 60px;
-        margin-bottom: 10px;
-    }
-
-    .card-right {
-        padding: 30px;
-        width: 60%;
-    }
-
-    .form-label {
-        color: #333;
-    }
-
-    .form-control {
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-    }
-
-    .form-control:focus {
-        border-color: #0097A7;
-        box-shadow: 0 0 0 0.2rem rgba(0, 151, 167, 0.25);
-    }
-
-    .btn-primary {
-        background-color: #0097A7;
-        border: none;
-    }
-
-    .btn-primary:hover {
-        background-color: #007c91;
-    }
-
-    .btn-link {
-        color: #0097A7;
-    }
-
-    h2 {
-        text-align: center;
-        color: #333;
-        margin-bottom: 20px;
-    }
-
-    @media (max-width: 768px) {
-        .card {
-            flex-direction: column;
-            width: 90%;
-            height: auto;
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', sans-serif;
+            position: relative;
+            overflow: hidden;
         }
 
-        .card-left,
-        .card-right {
+
+        #particles-js {
+            position: absolute;
             width: 100%;
+            height: 100%;
+            background: linear-gradient(120deg, #f0faff, #ffffff);
+            z-index: 0;
+        }
+
+
+        .center-box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 380px;
+            max-width: calc(100% - 40px);
+            z-index: 2;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(2, 8, 23, 0.12);
+            overflow: hidden;
+        }
+
+
+        .card-custom {
+            border: none;
+            border-radius: 12px;
+            padding: 28px;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(245, 252, 255, 0.7));
+        }
+
+
+        .brand {
+            display: block;
             text-align: center;
-            padding: 20px;
-        }
-    }
-
-    @media (min-width: 769px) {
-        .card {
-            width: 600px;
-            height: auto;
+            margin-bottom: 14px;
         }
 
-        .card-left {
-            width: 40%;
-            padding: 40px 20px;
+        .brand h2 {
+            margin: 0;
+            font-size: 22px;
+            color: #024b6e;
+            letter-spacing: -0.3px;
         }
 
-        .card-right {
-            width: 60%;
-            padding: 40px;
+
+        .form-control {
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(2, 136, 209, 0.12);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
         }
-    }
+
+
+        .form-control::placeholder {
+            color: #aaa;
+        }
+
+
+        .form-control:focus {
+            background-color: #fff;
+            border-color: #0288d1;
+            box-shadow: 0 0 0 0.2rem rgba(2, 136, 209, 0.2);
+        }
+
+
+        .btn-primary {
+            background-color: #0288d1;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 16px;
+        }
+
+
+        .btn-primary:hover {
+            background-color: #0277bd;
+        }
+
+
+        .btn-link {
+            color: #0288d1;
+            text-decoration: none;
+        }
+
+
+        .alert-suc {
+            background: rgba(12, 145, 80, 0.08);
+            color: #0c9150;
+            border: 1px solid rgba(12, 145, 80, 0.12);
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+
+
+        .alert-err {
+            background: rgba(255, 69, 58, 0.06);
+            color: #b32419;
+            border: 1px solid rgba(255, 69, 58, 0.1);
+            padding: 10px 12px;
+            border-radius: 8px;
+        }
+
+        .small-note {
+            font-size: 13px;
+            color: #6b7c86;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+
+        @media (max-width: 480px) {
+            .center-box {
+                width: calc(100% - 32px);
+                padding: 12px;
+            }
+
+            .card-custom {
+                padding: 18px;
+            }
+        }
     </style>
+
 </head>
 
 <body>
-
     <div id="particles-js"></div>
 
-    <div class="container p-3 d-flex justify-content-center align-items-center vh-100">
-        <div class="card">
 
-            <div class="card-left">
-                <i class="bi bi-cart-fill"></i>
-                <h4>Online Shop</h4>
+    <div class="center-box">
+        <div class="card-custom">
+            <div class="brand">
+                <h2>ยินดีต้อนรับกลับ</h2>
             </div>
 
-            <div class="card-right">
-                <h2>Login</h2>
 
-                <?php if (!empty($error)): ?>
-                <div class="alert alert-danger">
-                    <ul class="mb-0">
-                        <?php foreach ($error as $e): ?>
-                        <li><?= htmlspecialchars($e) ?></li>
-                        <?php endforeach; ?>
-                    </ul>
+            <?php if ($error): ?>
+                <div class="alert-err"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+
+
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label for="username_or_email" class="form-label">ชื่อผู้ใช้ หรือ อีเมล</label>
+                    <input type="text" class="form-control" id="username_or_email" name="username_or_email" placeholder="กรอกชื่อผู้ใช้หรืออีเมล" required>
                 </div>
-                <?php endif; ?>
 
-                <form method="post" action="">
-                    <div class="mb-3">
-                        <label class="form-label" for="username">Username or Email</label>
-                        <input type="text" class="form-control" name="username" id="username" required
-                            placeholder="ชื่อผู้ใช้ หรืออีเมล">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="password">Password</label>
-                        <input type="password" class="form-control" name="password" id="password" required
-                            placeholder="รหัสผ่าน">
-                    </div>
-                    <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="rememberMe">
-                        <label class="form-check-label" for="rememberMe">Remember me</label>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                        <button type="submit" class="btn btn-primary">Login</button>
-                        <div>
-                            <a href="registeer.php" class="btn btn-link">Register</a>
-                            <a href="#" class="btn btn-link">Forgot?</a>
-                        </div>
-                    </div>
-                </form>
-            </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">รหัสผ่าน</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="รหัสผ่าน" required>
+                </div>
+
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">เข้าสู่ระบบ</button>
+                </div>
+
+
+                <div class="small-note mt-3">
+                    ยังไม่มีบัญชี? <a href="registeer.php" class="btn btn-link">ลงทะเบียน</a>
+                </div>
+            </form>
         </div>
     </div>
-
-    <!-- Particles JS -->
-    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-    <script>
-    particlesJS("particles-js", {
-        "particles": {
-            "number": {
-                "value": 40,
-                "density": {
-                    "enable": true,
-                    "value_area": 800
-                }
-            },
-            "color": {
-                "value": "#0288d1"
-            },
-            "shape": {
-                "type": "circle",
-                "stroke": {
-                    "width": 0,
-                    "color": "#000"
-                },
-                "polygon": {
-                    "nb_sides": 5
-                }
-            },
-            "opacity": {
-                "value": 0.5,
-                "random": true
-            },
-            "size": {
-                "value": 5,
-                "random": true
-            },
-            "line_linked": {
-                "enable": true,
-                "distance": 150,
-                "color": "#0288d1",
-                "opacity": 0.4,
-                "width": 1
-            },
-            "move": {
-                "enable": true,
-                "speed": 3,
-                "direction": "none",
-                "random": false,
-                "straight": false,
-                "out_mode": "out",
-                "bounce": false
-            }
-        },
-        "interactivity": {
-            "detect_on": "canvas",
-            "events": {
-                "onhover": {
-                    "enable": true,
-                    "mode": "repulse"
-                },
-                "onclick": {
-                    "enable": true,
-                    "mode": "push"
-                },
-                "resize": true
-            },
-            "modes": {
-                "repulse": {
-                    "distance": 100,
-                    "duration": 0.4
-                },
-                "push": {
-                    "particles_nb": 4
-                }
-            }
-        },
-        "retina_detect": true
-    });
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

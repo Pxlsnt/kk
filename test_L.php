@@ -1,34 +1,34 @@
-</html><?php 
-    session_start();
-    require_once 'config.php';
+</html><?php
+        session_start();
+        require_once 'config.php';
 
-    $error = '';
+        $error = '';
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $usernameOrEmail = trim($_POST['username_or_email']);
-        $password = $_POST['password'];
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $usernameOrEmail = trim($_POST['username_or_email']);
+            $password = $_POST['password'];
 
-        $sql = "SELECT * FROM users WHERE (username = ? OR email = ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->execute([$usernameOrEmail, $usernameOrEmail]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            $sql = "SELECT * FROM users WHERE (username = ? OR email = ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->execute([$usernameOrEmail, $usernameOrEmail]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['user_id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
 
-            if($user['role'] === 'admin'){
-                header("Location: admin/index.php");
+                if ($user['role'] === 'admin') {
+                    header("Location: admin/index.php");
+                } else {
+                    header("Location: test.php");
+                }
+                exit();
             } else {
-                header("Location: test.php");
+                $error = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
             }
-            exit();
-        } else {
-            $error = "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
         }
-    }
-?>
+        ?>
 <!DOCTYPE html>
 <html lang="th">
 
@@ -41,79 +41,79 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css">
 
     <style>
-    body {
-        background: linear-gradient(135deg, #0a2a66, #1e3f91);
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+        body {
+            background: linear-gradient(135deg, #0a2a66, #1e3f91);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
 
-    .login-card {
-        max-width: 420px;
-        margin: auto;
-        margin-top: 90px;
-        padding: 35px;
-        background: #ffffff;
-        border-radius: 18px;
-        box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
-    }
+        .login-card {
+            max-width: 420px;
+            margin: auto;
+            margin-top: 90px;
+            padding: 35px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+        }
 
-    .login-card h3 {
-        text-align: center;
-        margin-bottom: 25px;
-        font-weight: 700;
-        color: #0a2a66;
-    }
+        .login-card h3 {
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: 700;
+            color: #0a2a66;
+        }
 
-    .form-label {
-        font-weight: 500;
-        color: #333333;
-    }
+        .form-label {
+            font-weight: 500;
+            color: #333333;
+        }
 
-    .form-control {
-        border-radius: 10px;
-        padding: 10px;
-    }
+        .form-control {
+            border-radius: 10px;
+            padding: 10px;
+        }
 
-    .btn-primary {
-        width: 100%;
-        border-radius: 10px;
-        background-color: #1e3f91;
-        border: none;
-        font-weight: 600;
-        padding: 10px;
-    }
+        .btn-primary {
+            width: 100%;
+            border-radius: 10px;
+            background-color: #1e3f91;
+            border: none;
+            font-weight: 600;
+            padding: 10px;
+        }
 
-    .btn-primary:hover {
-        background-color: #152f6b;
-    }
+        .btn-primary:hover {
+            background-color: #152f6b;
+        }
 
-    .btn-link {
-        display: block;
-        text-align: center;
-        margin-top: 12px;
-        color: #1e3f91;
-        font-weight: 500;
-    }
+        .btn-link {
+            display: block;
+            text-align: center;
+            margin-top: 12px;
+            color: #1e3f91;
+            font-weight: 500;
+        }
 
-    .btn-link:hover {
-        color: #0a2a66;
-    }
+        .btn-link:hover {
+            color: #0a2a66;
+        }
 
-    .alert {
-        max-width: 420px;
-        margin: 20px auto;
-        border-radius: 10px;
-    }
+        .alert {
+            max-width: 420px;
+            margin: 20px auto;
+            border-radius: 10px;
+        }
     </style>
 </head>
 
 <body>
 
     <?php if (isset($_GET['register']) && $_GET['register'] === 'success'): ?>
-    <div class="alert alert-success text-center shadow-sm"> ✅ สมัครสมาชิกสำเร็จ กรุณาเข้าสู่ระบบ </div>
+        <div class="alert alert-success text-center shadow-sm"> ✅ สมัครสมาชิกสำเร็จ กรุณาเข้าสู่ระบบ </div>
     <?php endif; ?>
 
     <?php if (!empty($error)): ?>
-    <div class="alert alert-danger text-center shadow-sm">❌ <?= htmlspecialchars($error) ?></div>
+        <div class="alert alert-danger text-center shadow-sm">❌ <?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
     <div class="login-card">

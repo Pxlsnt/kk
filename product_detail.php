@@ -8,11 +8,11 @@ $stmt = $conn->prepare("SELECT p.*, c.category_name
     FROM products p
     LEFT JOIN categories c ON p.category_id = c.category_id
     WHERE p.product_id = ?");
-    $stmt->execute([$product_id]);
+$stmt->execute([$product_id]);
 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 $isLoggedIn = isset($_SESSION['user_id']);
 
-if(!isset($_GET['id'])){
+if (!isset($_GET['id'])) {
     header('Location: test.php');
     exit();
 }
@@ -37,15 +37,15 @@ if(!isset($_GET['id'])){
             <p><strong>ราคา:</strong> <?= htmlspecialchars($product['price']) ?> บาท</p>
             <p><strong>คงเหลือ:</strong> <?= htmlspecialchars($product['stock']) ?> ชิ้น </p>
             <?php if ($isLoggedIn): ?>
-            <form form action="cart.php" method="post" class="mt-3">
-                <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
-                <label for="quantity">จำนวน:</label>
-                <input type="number" name="quantity" id="quantity" value="1" min="1" max="<?=
-                    $product['stock'] ?>" required>
-                <button type="submit" class="btn btn-success">เพิ่มในตะกร้า</button>
-            </form>
+                <form form action="cart.php" method="post" class="mt-3">
+                    <input type="hidden" name="product_id" value="<?= $product['product_id'] ?>">
+                    <label for="quantity">จำนวน:</label>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" max="<?=
+                                                                                                $product['stock'] ?>" required>
+                    <button type="submit" class="btn btn-success">เพิ่มในตะกร้า</button>
+                </form>
             <?php else: ?>
-            <div class="alert alert-info mt-3">กรุณาเข้าสู่ระบบเพื่อสั่งซื้อสินค้า</div>
+                <div class="alert alert-info mt-3">กรุณาเข้าสู่ระบบเพื่อสั่งซื้อสินค้า</div>
             <?php endif; ?>
         </div>
     </div>
